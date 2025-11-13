@@ -17,7 +17,7 @@ const LayoutPage = (): ReactElement => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 container mx-auto">
+      <main className="container px-4 flex-1 mx-auto">
         <Outlet />
       </main>
     </div>
