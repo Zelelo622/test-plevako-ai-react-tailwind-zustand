@@ -4,6 +4,9 @@
 @theme {
   --color-stroke: #e8ebf0;
   --color-brandDeepBlut: #0c1bb1;
+
+  --color-text-secondary: #242429;
+  --color-text-muted: #757685;
 }
 
 body {

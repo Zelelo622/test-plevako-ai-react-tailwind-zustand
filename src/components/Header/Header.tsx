@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { ReactElement } from "react";
 import Divider from "../Divider/Divider";
 import LogoSVG from "src/assets/logo.svg?react";
+import UserProfile from "../UserProfile/UserProfile";
 
 const Header = (): ReactElement => {
   return (
@@ -45,24 +46,8 @@ const Header = (): ReactElement => {
             Разместить заказ
           </button>
         </div>
-        <div className="flex items-center gap-5">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <img
-                src="/avatar.png"
-                alt="Аватар"
-                className="w-9 h-9 rounded-full object-cover"
-              />
-              <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full" />
-            </div>
-            <div className="flex flex-col leading-tight">
-              <span className="text-sm font-medium text-gray-900">
-                Метрострой Инвест
-              </span>
-              <span className="text-xs text-gray-500">Стародубцев И.В.</span>
-            </div>
-          </div>
-        </div>
+
+        <UserProfile />
       </div>
 
       <Divider />
