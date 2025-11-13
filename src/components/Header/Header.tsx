@@ -18,7 +18,7 @@ const Header = (): ReactElement => {
               <li>
                 <Link
                   to="/bulletin-board"
-                  className="text-sm font-medium text-black hover:text-blue-600 transition-colors"
+                  className="text-sm font-medium text-black hover-transition"
                 >
                   Доска заказов
                 </Link>
@@ -26,7 +26,7 @@ const Header = (): ReactElement => {
               <li>
                 <Link
                   to="/rate"
-                  className="text-sm font-medium text-black hover:text-blue-600 transition-colors"
+                  className="text-sm font-medium text-black hover-transition"
                 >
                   Тарифы
                 </Link>
@@ -34,7 +34,7 @@ const Header = (): ReactElement => {
               <li>
                 <Link
                   to="/contacts"
-                  className="text-sm font-medium text-black hover:text-blue-600 transition-colors"
+                  className="text-sm font-medium text-black hover-transition"
                 >
                   Контакты
                 </Link>

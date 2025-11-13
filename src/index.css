@@ -9,6 +9,10 @@
   --color-text-muted: #757685;
 }
 
+.hover-transition {
+  @apply hover:text-blue-600 transition-colors;
+}
+
 body {
   font-family: "Montserrat", sans-serif;
 }
