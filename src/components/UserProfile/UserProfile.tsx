@@ -26,7 +26,7 @@ const UserProfile = (): ReactElement => {
       <div
         ref={triggerRef}
         onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
         className="cursor-pointer py-2 px-3"
       >
         <ProfileItem
@@ -47,7 +47,7 @@ const UserProfile = (): ReactElement => {
               width: coords.width + 8,
             }}
             onMouseEnter={() => setIsOpen(true)}
-            onMouseLeave={() => setIsOpen(true)}
+            onMouseLeave={() => setIsOpen(false)}
           >
             <div className="cursor-pointer py-2 px-3">
               <ProfileItem
