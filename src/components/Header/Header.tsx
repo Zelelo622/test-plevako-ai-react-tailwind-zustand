@@ -1,9 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState, type ReactElement } from "react";
+import { useEffect, type ReactElement } from "react";
 import Divider from "../Divider/Divider";
 import LogoSVG from "src/assets/logo.svg?react";
 import UserProfile from "../UserProfile/UserProfile";
-import { IProfile } from "src/types";
 import { useUserStore } from "src/store/userStore";
 
 const Header = (): ReactElement => {
