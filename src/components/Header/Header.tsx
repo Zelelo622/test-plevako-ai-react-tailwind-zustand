@@ -20,7 +20,7 @@ const Header = (): ReactElement => {
   }, []);
 
   return (
-    <header className="container px-4 w-full bg-white mx-auto">
+    <header className="container px-4 mb-4 w-full bg-white mx-auto">
       <div className="flex items-center justify-between py-2 gap-3.5">
         <div className="flex-1 flex items-center justify-between">
           <Link to="/" className="shrink-0">
