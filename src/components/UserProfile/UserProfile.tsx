@@ -4,8 +4,13 @@ import { Link } from "@tanstack/react-router";
 import Divider from "../Divider/Divider";
 import AlertSVG from "src/assets/alert.svg?react";
 import { createPortal } from "react-dom";
+import { IUserProfileProps } from "./types";
+import { NotificationLink } from "./NotificationLink";
 
-const UserProfile = (): ReactElement => {
+const UserProfile = ({
+  userProfile,
+  otherProfiles,
+}: IUserProfileProps): ReactElement => {
   const [isOpen, setIsOpen] = useState(false);
   const [coords, setCoords] = useState<DOMRect | null>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -16,10 +21,16 @@ const UserProfile = (): ReactElement => {
     }
   }, [isOpen]);
 
-  const otherProfiles = [
-    { id: "2", name: "Метрострой Инвест", owner: "Стародубцев И.В." },
-    { id: "3", name: "Метрострой Инвест", owner: "Стародубцев И.В." },
-  ];
+  if (!userProfile) {
+    return (
+      <Link
+        to="/login"
+        className="cursor-pointer px-5 py-3 leading-6 font-semibold hover:text-green-800 transition-colors"
+      >
+        Вход / Регистрация
+      </Link>
+    );
+  }
 
   return (
     <>
@@ -30,9 +41,9 @@ const UserProfile = (): ReactElement => {
         className="cursor-pointer py-2 px-3"
       >
         <ProfileItem
-          name="Метрострой Инвест"
-          owner="Стародубцев И.В."
-          showAlert={true}
+          name={userProfile.name}
+          owner={userProfile.owner}
+          showAlert={!!userProfile.notifications?.myOrders?.unread}
         />
       </div>
 
@@ -51,85 +62,100 @@ const UserProfile = (): ReactElement => {
           >
             <div className="cursor-pointer py-2 px-3">
               <ProfileItem
-                name="Метрострой Инвест"
-                owner="Стародубцев И.В."
-                showAlert={true}
+                name={userProfile.name}
+                owner={userProfile.owner}
+                showAlert={!!userProfile.notifications?.myOrders?.unread}
               />
             </div>
 
             <div className="bg-white rounded-xl overflow-hidden">
               <div className="px-1 py-1.5">
                 <div className="py-2 px-1">
-                  <div className="font-medium text-text-secondary">
-                    Тариф Unlimited PRO
-                  </div>
-                  <div className="font-medium text-text-muted">
-                    Активен до 24 августа
-                  </div>
+                  {userProfile.subscription ? (
+                    <>
+                      <div className="font-medium text-text-secondary">
+                        Тариф {userProfile.subscription.name}
+                      </div>
+                      <div className="font-medium text-text-muted">
+                        Активен до{" "}
+                        {new Date(
+                          userProfile.subscription.activeUntil
+                        ).toLocaleDateString("ru-RU", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      to="tariff"
+                      className="font-medium text-text-secondary hover-transition"
+                    >
+                      Подписки сейчас нет
+                    </Link>
+                  )}
                 </div>
               </div>
 
               <div className="py-1.5 font-medium text-text-secondary">
-                <Link
+                <NotificationLink
                   to="/"
-                  className="py-2 px-3 flex justify-between hover-transition"
-                >
-                  <span>Мои заказы</span>
-                  <span>3</span>
-                </Link>
-                <Link
+                  label="Мои заказы"
+                  total={userProfile.notifications?.myOrders?.total}
+                  unread={userProfile.notifications?.myOrders?.unread}
+                />
+                <NotificationLink
                   to="/"
-                  className="py-2 px-3 flex justify-between hover-transition"
-                >
-                  <span>Исходящие отклики</span>
-                  <span>17</span>
-                </Link>
-                <Link
+                  label="Исходящие отклики"
+                  total={userProfile.notifications?.outgoing?.total}
+                  unread={userProfile.notifications?.outgoing?.unread}
+                />
+                <NotificationLink
                   to="/"
-                  className="py-2 px-3 flex justify-between hover-transition"
-                >
-                  <span>Входящие заказы</span>
-                  <div className="flex items-center gap-1.5">
-                    <span>8</span>
-                    <span className="bg-brandDeepBlut text-white rounded-full leading-5 px-2 py-0.5">
-                      +2
-                    </span>
-                  </div>
-                </Link>
+                  label="Входящие заказы"
+                  total={userProfile.notifications?.incoming?.total}
+                  unread={userProfile.notifications?.incoming?.unread}
+                />
 
-                <Link to="/" className="py-2 px-3 flex hover-transition">
+                <Link to="/profile" className="py-2 px-3 flex hover-transition">
                   Кабинет
                 </Link>
                 <Link
-                  to="/"
+                  to="/electronic-signatures"
                   className="py-2 px-3 flex justify-between hover-transition"
                 >
                   Электронные подписи
-                  <span>
-                    <AlertSVG />
-                  </span>
+                  {userProfile.notifications?.eSign?.hasAlert && (
+                    <span>
+                      <AlertSVG />
+                    </span>
+                  )}
                 </Link>
                 <button className="cursor-pointer py-2 px-3 flex hover-transition w-full">
                   Выход
                 </button>
               </div>
+              {otherProfiles && (
+                <>
+                  <Divider className="my-3" />
 
-              <Divider className="my-3" />
-
-              <div>
-                {otherProfiles.map((profile) => (
-                  <button
-                    key={profile.id}
-                    className="cursor-pointer w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors rounded-2xl"
-                  >
-                    <ProfileItem
-                      name={profile.name}
-                      owner={profile.owner}
-                      showAlert={false}
-                    />
-                  </button>
-                ))}
-              </div>
+                  <div>
+                    {otherProfiles.map((profile) => (
+                      <button
+                        key={profile.id}
+                        className="cursor-pointer w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors rounded-2xl"
+                      >
+                        <ProfileItem
+                          name={profile.name}
+                          owner={profile.owner}
+                          showAlert={false}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>,
           document.body
