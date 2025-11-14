@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import LayoutPage from "../providers/LayoutPage";
+import Spinner from "src/components/Spinner/Spinner";
 
 const HomePage = lazy(() => import("../../pages/Home/HomePage"));
 const NotFoundPage = lazy(
@@ -14,7 +15,7 @@ const NotFoundPage = lazy(
 export const rootRoute = createRootRoute({
   component: LayoutPage,
   notFoundComponent: () => (
-    <Suspense fallback={<div>Загрузка...</div>}>
+    <Suspense fallback={<Spinner />}>
       <NotFoundPage />
     </Suspense>
   ),
@@ -24,7 +25,7 @@ const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: () => (
-    <Suspense fallback={<div>Загрузка...</div>}>
+    <Suspense fallback={<Spinner />}>
       <HomePage />
     </Suspense>
   ),

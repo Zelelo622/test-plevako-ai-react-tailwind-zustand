@@ -1,11 +1,11 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { ProfileItem } from "./ProfileItem";
+import { ProfileItem } from "./components/ProfileItem";
 import { Link } from "@tanstack/react-router";
 import Divider from "../Divider/Divider";
 import AlertSVG from "src/assets/alert.svg?react";
 import { createPortal } from "react-dom";
 import { IUserProfileProps } from "./types";
-import { NotificationLink } from "./NotificationLink";
+import { NotificationLink } from "./components/NotificationLink";
 
 const UserProfile = ({
   userProfile,
@@ -90,7 +90,7 @@ const UserProfile = ({
                   ) : (
                     <Link
                       to="tariff"
-                      className="font-medium text-text-secondary hover-transition"
+                      className="font-medium text-text-secondary hover-transition-profile"
                     >
                       Подписки сейчас нет
                     </Link>
@@ -100,30 +100,30 @@ const UserProfile = ({
 
               <div className="py-1.5 font-medium text-text-secondary">
                 <NotificationLink
-                  to="/"
+                  to="/my-orders"
                   label="Мои заказы"
                   total={userProfile.notifications?.myOrders?.total}
                   unread={userProfile.notifications?.myOrders?.unread}
                 />
                 <NotificationLink
-                  to="/"
+                  to="/outgoing-responses"
                   label="Исходящие отклики"
                   total={userProfile.notifications?.outgoing?.total}
                   unread={userProfile.notifications?.outgoing?.unread}
                 />
                 <NotificationLink
-                  to="/"
+                  to="/incoming-orders"
                   label="Входящие заказы"
                   total={userProfile.notifications?.incoming?.total}
                   unread={userProfile.notifications?.incoming?.unread}
                 />
 
-                <Link to="/profile" className="py-2 px-3 flex hover-transition">
+                <Link to="/profile" className="py-2 px-3 flex hover-transition-profile">
                   Кабинет
                 </Link>
                 <Link
                   to="/electronic-signatures"
-                  className="py-2 px-3 flex justify-between hover-transition"
+                  className="py-2 px-3 flex items-center justify-between hover-transition-profile"
                 >
                   Электронные подписи
                   {userProfile.notifications?.eSign?.hasAlert && (
@@ -132,7 +132,7 @@ const UserProfile = ({
                     </span>
                   )}
                 </Link>
-                <button className="cursor-pointer py-2 px-3 flex hover-transition w-full">
+                <button className="cursor-pointer py-2 px-3 flex hover-transition-profile w-full">
                   Выход
                 </button>
               </div>

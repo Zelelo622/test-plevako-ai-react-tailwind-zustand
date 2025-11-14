@@ -4,21 +4,20 @@ import Divider from "../Divider/Divider";
 import LogoSVG from "src/assets/logo.svg?react";
 import UserProfile from "../UserProfile/UserProfile";
 import { IProfile } from "src/types";
+import { useUserStore } from "src/store/userStore";
 
 const Header = (): ReactElement => {
-  const [userProfile, setUserProfile] = useState<IProfile | null>(null);
-  const [otherProfiles, setOtherProfiles] = useState<IProfile[]>([]);
+  const {
+    userProfile,
+    otherProfiles,
+    fetchUserProfile,
+    fetchOtherProfiles,
+    loading,
+  } = useUserStore();
 
   useEffect(() => {
-    fetch("http://localhost:3001/getUserProfile")
-      .then((res) => res.json())
-      .then(setUserProfile)
-      .catch(console.error);
-
-    fetch("http://localhost:3001/getOtherProfiles")
-      .then((res) => res.json())
-      .then(setOtherProfiles)
-      .catch(console.error);
+    fetchUserProfile();
+    fetchOtherProfiles();
   }, []);
 
   return (
@@ -34,7 +33,7 @@ const Header = (): ReactElement => {
               <li>
                 <Link
                   to="/bulletin-board"
-                  className="text-sm font-medium text-black hover-transition"
+                  className="text-sm font-medium text-black hover-color-link-header"
                 >
                   Доска заказов
                 </Link>
@@ -42,7 +41,7 @@ const Header = (): ReactElement => {
               <li>
                 <Link
                   to="/rate"
-                  className="text-sm font-medium text-black hover-transition"
+                  className="text-sm font-medium text-black hover-color-link-header"
                 >
                   Тарифы
                 </Link>
@@ -50,7 +49,7 @@ const Header = (): ReactElement => {
               <li>
                 <Link
                   to="/contacts"
-                  className="text-sm font-medium text-black hover-transition"
+                  className="text-sm font-medium text-black hover-color-link-header"
                 >
                   Контакты
                 </Link>
@@ -63,7 +62,14 @@ const Header = (): ReactElement => {
           </button>
         </div>
 
-        <UserProfile userProfile={userProfile} otherProfiles={otherProfiles} />
+        {loading ? (
+          <div className="h-16 bg-gray-200 rounded-lg animate-pulse w-[244px] xl:w-[308px]"></div>
+        ) : (
+          <UserProfile
+            userProfile={userProfile}
+            otherProfiles={otherProfiles}
+          />
+        )}
       </div>
 
       <Divider />

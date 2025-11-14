@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import AlertSVG from "src/assets/alert.svg?react";
-import { IProfileItemProps } from "./types";
+import { IProfileItemProps } from "../types";
 
 export const ProfileItem = ({
   name,

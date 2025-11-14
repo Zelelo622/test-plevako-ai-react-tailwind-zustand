@@ -10,8 +10,12 @@
   --color-text-muted: #757685;
 }
 
-.hover-transition {
+.hover-transition-profile {
   @apply hover:bg-grey0 rounded-lg;
+}
+
+.hover-color-link-header {
+  @apply hover:text-blue-600;
 }
 
 body {
