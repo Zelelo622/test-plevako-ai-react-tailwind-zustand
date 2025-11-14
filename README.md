@@ -24,4 +24,10 @@ npm run build
 npm run preview
 ```
 
+## Запуск мокового сервера
+
+```
+npm run mockserver
+```
+
 ---
