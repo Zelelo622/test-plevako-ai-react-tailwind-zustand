@@ -1,29 +1,33 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { ProfileItem } from "./ProfileItem";
 import { Link } from "@tanstack/react-router";
+import Divider from "../Divider/Divider";
+import AlertSVG from "src/assets/alert.svg?react";
+import { createPortal } from "react-dom";
 
 const UserProfile = (): ReactElement => {
   const [isOpen, setIsOpen] = useState(false);
-  const [menuWidth, setMenuWidth] = useState<number | undefined>(undefined);
+  const [coords, setCoords] = useState<DOMRect | null>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (triggerRef.current) {
-      setMenuWidth(triggerRef.current.offsetWidth);
+    if (isOpen && triggerRef.current) {
+      setCoords(triggerRef.current.getBoundingClientRect());
     }
-  }, []);
+  }, [isOpen]);
 
   const otherProfiles = [
-    { name: "Метрострой Инвест", owner: "Стародубцев И.В." },
-    { name: "Метрострой Инвест", owner: "Стародубцев И.В." },
+    { id: "2", name: "Метрострой Инвест", owner: "Стародубцев И.В." },
+    { id: "3", name: "Метрострой Инвест", owner: "Стародубцев И.В." },
   ];
 
   return (
-    <div className="relative">
+    <>
       <div
         ref={triggerRef}
-        className="cursor-pointer py-2 px-3"
+        onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(true)}
+        className="cursor-pointer py-2 px-3"
       >
         <ProfileItem
           name="Метрострой Инвест"
@@ -32,90 +36,105 @@ const UserProfile = (): ReactElement => {
         />
       </div>
 
-      {isOpen && (
-        <div
-          style={{ width: menuWidth }}
-          className="absolute left-0 top-full bg-white z-50"
-          onMouseEnter={() => setIsOpen(true)}
-          onMouseLeave={() => setIsOpen(true)}
-        >
-          <div className="px-1 py-1.5 border-gray-100">
-            <div className="py-2 px-3">
-              <div className="font-medium text-text-secondary">
-                Тариф Unlimited PRO
+      {isOpen &&
+        coords &&
+        createPortal(
+          <div
+            className="absolute z-9999 bg-white boxShadow-profile-popup rounded-2xl py-2 px-1"
+            style={{
+              top: coords.top + window.scrollY - 8,
+              left: coords.left + window.scrollX - 4,
+              width: coords.width + 8,
+            }}
+            onMouseEnter={() => setIsOpen(true)}
+            onMouseLeave={() => setIsOpen(true)}
+          >
+            <div className="cursor-pointer py-2 px-3">
+              <ProfileItem
+                name="Метрострой Инвест"
+                owner="Стародубцев И.В."
+                showAlert={true}
+              />
+            </div>
+
+            <div className="bg-white rounded-xl overflow-hidden">
+              <div className="px-1 py-1.5">
+                <div className="py-2 px-1">
+                  <div className="font-medium text-text-secondary">
+                    Тариф Unlimited PRO
+                  </div>
+                  <div className="font-medium text-text-muted">
+                    Активен до 24 августа
+                  </div>
+                </div>
               </div>
-              <div className="font-medium text-text-muted">
-                Активен до 24 августа
+
+              <div className="py-1.5 font-medium text-text-secondary">
+                <Link
+                  to="/"
+                  className="py-2 px-3 flex justify-between hover-transition"
+                >
+                  <span>Мои заказы</span>
+                  <span>3</span>
+                </Link>
+                <Link
+                  to="/"
+                  className="py-2 px-3 flex justify-between hover-transition"
+                >
+                  <span>Исходящие отклики</span>
+                  <span>17</span>
+                </Link>
+                <Link
+                  to="/"
+                  className="py-2 px-3 flex justify-between hover-transition"
+                >
+                  <span>Входящие заказы</span>
+                  <div className="flex items-center gap-1.5">
+                    <span>8</span>
+                    <span className="bg-brandDeepBlut text-white rounded-full leading-5 px-2 py-0.5">
+                      +2
+                    </span>
+                  </div>
+                </Link>
+
+                <Link to="/" className="py-2 px-3 flex hover-transition">
+                  Кабинет
+                </Link>
+                <Link
+                  to="/"
+                  className="py-2 px-3 flex justify-between hover-transition"
+                >
+                  Электронные подписи
+                  <span>
+                    <AlertSVG />
+                  </span>
+                </Link>
+                <button className="cursor-pointer py-2 px-3 flex hover-transition w-full">
+                  Выход
+                </button>
+              </div>
+
+              <Divider className="my-3" />
+
+              <div>
+                {otherProfiles.map((profile) => (
+                  <button
+                    key={profile.id}
+                    className="cursor-pointer w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors rounded-2xl"
+                  >
+                    <ProfileItem
+                      name={profile.name}
+                      owner={profile.owner}
+                      showAlert={false}
+                    />
+                  </button>
+                ))}
               </div>
             </div>
-          </div>
-
-          <div className="px-1 py-1.5 font-medium text-text-secondary">
-            <Link
-              to="/"
-              className="py-2 px-3 flex justify-between hover-transition"
-            >
-              <span>Мои заказы</span>
-              <span>3</span>
-            </Link>
-            <Link
-              to="/"
-              className="py-2 px-3 flex justify-between hover-transition"
-            >
-              <span>Исходящие отклики</span>
-              <span>17</span>
-            </Link>
-            <Link
-              to="/"
-              className="py-2 px-3 flex justify-between hover-transition"
-            >
-              <span>Входящие заказы</span>
-              <div className="flex items-center gap-1.5">
-                <span>8</span>
-                <span className="bg-brandDeepBlut text-white rounded-full leading-5 px-2 py-0.5">
-                  +2
-                </span>
-              </div>
-            </Link>
-            <Link
-              to="/"
-              className="py-2 px-3 flex hover-transition"
-            >
-              Кабинет
-            </Link>
-            <Link
-              to="/"
-              className="py-2 px-3 flex justify-between hover-transition"
-            >
-              Электронные подписи
-              <span className="text-red-600 text-xs">!</span>
-            </Link>
-            <Link
-              to="/"
-              className="py-2 px-3 flex hover-transition"
-            >
-              Выход
-            </Link>
-          </div>
-
-          {/* <div className="border-t border-gray-100 pt-2">
-            {otherProfiles.map((profile, idx) => (
-              <button
-                key={idx}
-                className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors"
-              >
-                <ProfileItem
-                  name={profile.name}
-                  owner={profile.owner}
-                  size="sm"
-                  showAlert={true}
-                />
-              </button>
-            ))}
-          </div> */}
-        </div>
-      )}
-    </div>
+          </div>,
+          document.body
+        )}
+    </>
   );
 };
 
